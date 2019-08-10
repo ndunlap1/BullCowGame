@@ -1,2 +1,6 @@
 ﻿  FBullCowGame.cpp
+  main.cpp
+  Generating Code...
+C:\Users\dunla\Documents\Development Projects\Udemy Courses\Section4-Old\BullCowGame\BullCowGame\FBullCowGame.cpp(77,40): warning C4018:  '<': signed/unsigned mismatch
+C:\Users\dunla\Documents\Development Projects\Udemy Courses\Section4-Old\BullCowGame\BullCowGame\main.cpp(106): warning C4715:  'GetValidGuess': not all control paths return a value
   BullCowGame.vcxproj -> C:\Users\dunla\Documents\Development Projects\Udemy Courses\Section4-Old\BullCowGame\Debug\BullCowGame.exe
