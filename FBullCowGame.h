@@ -43,13 +43,15 @@ public:
 	bool IsGameWon() const;
 
 
-	FBullCowCount SubmitGuess(FString);
+	FBullCowCount SubmitValidGuess(FString);
 
 private:
 	int32 MyCurrentTry;
 	int32 MyMaxTries;
-	bool IsIsogram(FString);
+	bool IsIsogram(FString Guess) const;
 	FString MyHiddenWord;
+
+	bool bGameIsWon;
 
 
 

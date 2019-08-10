@@ -16,6 +16,7 @@ using int32 = int;
 
 void PrintIntro();
 void PlayGame();
+void PrintGameSummary();
 FText GetValidGuess();
 bool AskToPlayAgain();
 FBullCowGame BCGame;
@@ -52,27 +53,43 @@ void PlayGame() {
 	std::cout << "Number of max tries: " << MaxTries << std::endl;
 
 	//Loop for the number of turns asking for guesses
-	for (int32 Count = 1; Count <= MaxTries; Count++) {
+
+	// Loop asking for guesses while the game 
+	// is NOT won and there are still tries remaining
+	while (!BCGame.IsGameWon() && BCGame.GetCurrentTry() <= MaxTries)
+	{
 		FText Guess = GetValidGuess(); //TODO make loop checking valid
 
 		// Submit valid guess to game
-		FBullCowCount BullCowCount = BCGame.SubmitGuess(Guess);
+		FBullCowCount BullCowCount = BCGame.SubmitValidGuess(Guess);
 		std::cout << "Bulls = " << BullCowCount.Bulls << ". Cows = " << BullCowCount.Cows << std::endl;
+
 	}
 
 	// TODO Sumarize game
-
+	PrintGameSummary();
 	return;
+}
 
-
+void PrintGameSummary()
+{
+	if (BCGame.IsGameWon())
+	{
+		std::cout << "You have won! Congratulations!\n";
+	}
+	else
+	{
+		std::cout << "You have lost. Better luck next time!\n";
+	}
 }
 
 FText GetValidGuess() {
 
+	FText Guess = "";
 	EGuessStatus GuessStatus = EGuessStatus::Invalid_Status;
 	do {
 		// Get guess from the player
-		FText Guess = "";
+		Guess = "";
 		std::cout << "Try " << BCGame.GetCurrentTry() << ". ";
 		std::cout << "Please enter your guess:";
 		getline(std::cin, Guess);
@@ -101,15 +118,17 @@ FText GetValidGuess() {
 			std::cout << "Numbers should not be included." << std::endl;
 			break;
 		default:
-			return Guess;
+			// assume guess is valid
+			break;
 		}
 		std::cout << std::endl;
 	} while (GuessStatus!= EGuessStatus::OK);
+	return Guess;
 }
 
 
 bool AskToPlayAgain() {
-	std::cout << "Do you want to play again? ";
+	std::cout << "Do you want to play again with the same hidden word (y/n)? ";
 	FText Response = "";
 	getline(std::cin, Response);
 	return ((Response[0] == 'y') || (Response[0] == 'Y'));
