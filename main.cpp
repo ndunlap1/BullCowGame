@@ -39,9 +39,24 @@ int main()
 void PrintIntro() {
 
 	//Introduction to Game
-	std::cout << "Welcome to Bulls and Cows" << std::endl;
-	std::cout << "Can you guess the " << BCGame.GetHiddenWordLength();
-	std::cout << " letter iosgram that I'm thinking of?\n" << std::endl;
+
+
+	std::cout << "Welcome to Bulls and Cows!" << std::endl;
+	std::cout << std::endl;
+	std::cout << "  ^           ^                                 " << std::endl;
+	std::cout << "  \\\\   ___   //         ^______^                " << std::endl;
+	std::cout << "   \\\\_/   \\_//          /      \\         " << std::endl;
+	std::cout << "   <  0   0  >         <  0  0  >                 " << std::endl;
+	std::cout << "    \\  BULL /           \\  COW /                     " << std::endl;
+	std::cout << "     \\     /             \\    /                   " << std::endl;
+	std::cout << "      [___]	          {--}      " << std::endl;
+	std::cout << "		                                             " << std::endl;
+	std::cout << std::endl;
+	BCGame.GetHiddenWordDifficulty();
+
+	std::cout << "You have entered a " << BCGame.GetHiddenWordLength() << " letter isogram." << std::endl;
+	//std::cout << "Can you guess the " << BCGame.GetHiddenWordLength();
+	//std::cout << " letter iosgram that I'm thinking of?\n" << std::endl;
 	return;
 }
 
@@ -83,6 +98,9 @@ void PrintGameSummary()
 	}
 }
 
+
+
+
 FText GetValidGuess() {
 
 	FText Guess = "";
@@ -90,8 +108,8 @@ FText GetValidGuess() {
 	do {
 		// Get guess from the player
 		Guess = "";
-		std::cout << "Try " << BCGame.GetCurrentTry() << ". ";
-		std::cout << "Please enter your guess:";
+		std::cout << "\nTry " << BCGame.GetCurrentTry() << " of " << BCGame.GetMaxTries();
+		std::cout << ". Please enter your guess:";
 		getline(std::cin, Guess);
 
 		// Check status and give feedback
@@ -121,7 +139,6 @@ FText GetValidGuess() {
 			// assume guess is valid
 			break;
 		}
-		std::cout << std::endl;
 	} while (GuessStatus!= EGuessStatus::OK);
 	return Guess;
 }

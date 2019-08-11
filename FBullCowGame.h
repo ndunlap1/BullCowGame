@@ -10,6 +10,35 @@ struct FBullCowCount
 	int32 Cows = 0;
 };
 
+struct FHiddenWordDictionary
+{
+	FString Three_HiddenWord[3] =
+	{
+		"and",
+		"ant",
+		"any"
+	};
+	FString Four_HiddenWord[3] =
+	{
+		"ahem",
+		"park",
+		"pack"
+	};
+	FString Five_HiddenWord[3] =
+	{
+		"dance",
+		"darts",
+		"mail"
+	};
+	FString Six_HiddenWord[3] =
+	{
+		"planets",
+		"fabled",
+		"falcon"
+	};
+
+};
+
 enum class EGuessStatus
 {
 	Invalid_Status,
@@ -41,14 +70,14 @@ public:
 	EGuessStatus CheckGuessValidity(FString Guess) const;
 
 	bool IsGameWon() const;
-
-
 	FBullCowCount SubmitValidGuess(FString);
 
+	FString CreateHiddenWord(int32 WordLength);
+	int32 GetHiddenWordDifficulty();
 private:
 	int32 MyCurrentTry;
-	int32 MyMaxTries;
 	bool IsIsogram(FString Guess) const;
+	bool IsLowercase(FString Guess) const;
 	FString MyHiddenWord;
 
 	bool bGameIsWon;
