@@ -26,7 +26,7 @@ FBullCowGame::FBullCowGame()
 
 void FBullCowGame::Reset()
 {
-	const FString HIDDEN_WORD = CreateHiddenWord(3);
+	const FString HIDDEN_WORD = CreateHiddenWord("3");
 
 	MyHiddenWord = HIDDEN_WORD;
 	MyCurrentTry = 1;
@@ -63,6 +63,11 @@ EGuessStatus FBullCowGame::CheckGuessValidity(FString Guess) const // TODO fix e
 
 
 	return EGuessStatus::OK;
+}
+
+void FBullCowGame::SetHiddenWord(FString NewWord)
+{
+	MyHiddenWord = NewWord;
 }
 
 // Recieves a VALID guess, incriments and returns count
@@ -108,27 +113,36 @@ FBullCowCount FBullCowGame::SubmitValidGuess(FString Guess)
 	return BullCowCount;
 }
 
-FString FBullCowGame::CreateHiddenWord(int32 WordLength)
+FString FBullCowGame::CreateHiddenWord(FString PlayerHiddenWordLength)
 {
+	TMap<FString, int32> HiddenWordLength{
+	{"3", 3},
+	{"4", 4},
+	{"5", 5},
+	{"6", 6}
+	};
+
 	FHiddenWordDictionary NewHiddenWord;
-	switch (WordLength)
+	FString HiddenWord = "";
+	switch (HiddenWordLength[PlayerHiddenWordLength])
 	{
 	case 3:
-		return NewHiddenWord.Three_HiddenWord[rand()%3];
+		HiddenWord = NewHiddenWord.Three_HiddenWord[rand() % 3];
 		break;
 	case 4:
-		return NewHiddenWord.Four_HiddenWord[rand() % 3];
+		HiddenWord = NewHiddenWord.Four_HiddenWord[rand() % 3];
 		break;
 	case 5:
-		return NewHiddenWord.Five_HiddenWord[rand() % 3];
+		HiddenWord = NewHiddenWord.Five_HiddenWord[rand() % 3];
 		break;
 	case 6:
-		return NewHiddenWord.Six_HiddenWord[rand() % 3];
+		HiddenWord = NewHiddenWord.Six_HiddenWord[rand() % 3];
 		break;
 	default:
-		return NewHiddenWord.Three_HiddenWord[rand() % 3];
+		HiddenWord = NewHiddenWord.Three_HiddenWord[rand() % 3];
 		break;
 	}
+	return HiddenWord;
 }
 
 bool FBullCowGame::IsIsogram(FString Guess) const
@@ -171,28 +185,3 @@ bool FBullCowGame::IsLowercase(FString Guess) const
 	return true;
 }
 
-int32 FBullCowGame::GetHiddenWordDifficulty()
-{
-	FString PlayerHiddenWordLength;
-	std::cout << " Please enter the length of the word that you would like to guess (3-6 characters long): ";
-	getline(std::cin, PlayerHiddenWordLength);
-
-	TMap<FString, int32> HiddenWordLength{
-		{"3", 3},
-		{"4", 4},
-		{"5", 5},
-		{"6", 6}
-	};
-
-	if (HiddenWordLength[PlayerHiddenWordLength] == NULL)
-	{
-		std::cout << "Unfortunately an isogram cannot be created with a length of " << PlayerHiddenWordLength << ". Switching the game over to a 3 letter isogram." << std::endl;
-		return 3;
-	}
-	else
-	{
-		return HiddenWordLength[PlayerHiddenWordLength];
-	}
-
-
-}

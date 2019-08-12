@@ -1,5 +1,11 @@
-/* This is the console executable, that makes  use of the Bull Cow Class
-THis acts as the view in a MVC pattern and is responsible for all user interaction.
+/* 
+Author: Nicholas Dunlap
+
+Created in accordance to the Section 2/5 Content from Udemy course:
+	Unreal Engine C++ Developer: Learn C++ and Make Video Games
+
+This is the console executable, that makes  use of the Bull Cow Class
+This acts as the view in a MVC pattern and is responsible for all user interaction.
 For game logic see the FBullCowGame class.
 
 
@@ -9,6 +15,8 @@ For game logic see the FBullCowGame class.
 #include <iostream>
 #include <string>
 #include "FBullCowGame.h"
+#include <map>
+#define TMap std::map
 
 using FText = std::string;
 using int32 = int;
@@ -19,13 +27,16 @@ void PlayGame();
 void PrintGameSummary();
 FText GetValidGuess();
 bool AskToPlayAgain();
+void SetHiddenWordDifficulty();
+
 FBullCowGame BCGame;
 
-//Start of the game
+
 int main()
 {
 	do
 	{
+		BCGame.Reset();
 		PrintIntro();
 		PlayGame();
 
@@ -38,9 +49,6 @@ int main()
 
 void PrintIntro() {
 
-	//Introduction to Game
-
-
 	std::cout << "Welcome to Bulls and Cows!" << std::endl;
 	std::cout << std::endl;
 	std::cout << "  ^           ^                                 " << std::endl;
@@ -52,9 +60,8 @@ void PrintIntro() {
 	std::cout << "      [___]	          {--}      " << std::endl;
 	std::cout << "		                                             " << std::endl;
 	std::cout << std::endl;
-	BCGame.GetHiddenWordDifficulty();
-
-	std::cout << "You have entered a " << BCGame.GetHiddenWordLength() << " letter isogram." << std::endl;
+	SetHiddenWordDifficulty();
+	std::cout << "You have entered a " << BCGame.GetHiddenWordLength() << " letter isogram.\n" << std::endl;
 	//std::cout << "Can you guess the " << BCGame.GetHiddenWordLength();
 	//std::cout << " letter iosgram that I'm thinking of?\n" << std::endl;
 	return;
@@ -62,8 +69,7 @@ void PrintIntro() {
 
 void PlayGame() {
 
-
-	BCGame.Reset();
+	//BCGame.Reset();
 	int32 MaxTries = BCGame.GetMaxTries();
 	std::cout << "Number of max tries: " << MaxTries << std::endl;
 
@@ -120,20 +126,11 @@ FText GetValidGuess() {
 		case EGuessStatus::Incorrect_Length:
 			std::cout << "Please enter a " << BCGame.GetHiddenWordLength() << " letter word." << std::endl;
 			break;
-		case EGuessStatus::Extra_Words:
-			std::cout << "Too many words! Please enter a single " << BCGame.GetHiddenWordLength() << " letter word." << std::endl;
-			break;
 		case EGuessStatus::Not_Isogram:
 			std::cout << "Please enter a word without repeating letters" << std::endl;
 			break;
 		case EGuessStatus::Not_Lowercase:
 			std::cout << "Please verify that all letters were entered in lowercase." << std::endl;
-			break;
-		case EGuessStatus::No_Input:
-			std::cout << "No input was given." << std::endl;
-			break;
-		case EGuessStatus::Numbers_Included:
-			std::cout << "Numbers should not be included." << std::endl;
 			break;
 		default:
 			// assume guess is valid
@@ -149,4 +146,21 @@ bool AskToPlayAgain() {
 	FText Response = "";
 	getline(std::cin, Response);
 	return ((Response[0] == 'y') || (Response[0] == 'Y'));
+}
+
+void SetHiddenWordDifficulty()
+{
+	FString PlayerHiddenWordLength;
+	FString HiddenWord;
+	std::cout << " Please enter the length of the word that you would like to guess (3-6 characters long): ";
+	getline(std::cin, PlayerHiddenWordLength);
+
+	if(PlayerHiddenWordLength != "3" && PlayerHiddenWordLength != "4" && PlayerHiddenWordLength != "5" && PlayerHiddenWordLength != "6")
+	{
+		std::cout << "Unfortunately an isogram cannot be created with a length of " << PlayerHiddenWordLength << ". Switching the game over to a 3 letter isogram." << std::endl;
+	}
+	else
+	{
+		BCGame.SetHiddenWord(BCGame.CreateHiddenWord(PlayerHiddenWordLength));
+	}
 }

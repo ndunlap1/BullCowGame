@@ -45,10 +45,7 @@ enum class EGuessStatus
 	OK,
 	Not_Isogram,
 	Incorrect_Length,
-	Extra_Words,
-	No_Input,
 	Not_Lowercase,
-	Numbers_Included
 
 };
 
@@ -69,11 +66,13 @@ public:
 	int32 GetHiddenWordLength() const;
 	EGuessStatus CheckGuessValidity(FString Guess) const;
 
+	void SetHiddenWord(FString NewWord);
+
 	bool IsGameWon() const;
 	FBullCowCount SubmitValidGuess(FString);
 
-	FString CreateHiddenWord(int32 WordLength);
-	int32 GetHiddenWordDifficulty();
+	FString CreateHiddenWord(FString WordLength);
+
 private:
 	int32 MyCurrentTry;
 	bool IsIsogram(FString Guess) const;
@@ -81,7 +80,5 @@ private:
 	FString MyHiddenWord;
 
 	bool bGameIsWon;
-
-
 
 };
